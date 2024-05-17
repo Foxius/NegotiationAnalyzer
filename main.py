@@ -1,30 +1,28 @@
 import os
-from pydub import AudioSegment
-import speech_recognition as sr
+from handlers.processing.audio_processor import AudioProcessor
+from handlers.processing.speech_recognizer import SpeechRecognizer
+from handlers.utils.regulation_checker import RegulationChecker
 
 source_folder = 'samples'
 output_folder = 'wav_samples'
 
-os.makedirs(output_folder, exist_ok=True)
+if not os.path.exists(output_folder):
+    os.makedirs(output_folder)
 
-recognizer = sr.Recognizer()
 
-def convert_and_recognize(file_path):
-    ogg_audio = AudioSegment.from_ogg(file_path)
-    wav_path = os.path.join(output_folder, os.path.splitext(os.path.basename(file_path))[0] + '.wav')
-    ogg_audio.export(wav_path, format='wav')
+def main():
+    recognizer = SpeechRecognizer(language='ru-RU')
+    checker = RegulationChecker('regulations.json')
+    processor = AudioProcessor(input_folder=source_folder, output_folder=output_folder)
+    for file_name in os.listdir(source_folder):
+        if file_name.endswith('.ogg'):
+            file_path = os.path.join(source_folder, file_name)
 
-    with sr.AudioFile(wav_path) as source:
-        audio_data = recognizer.record(source)
-        try:
-            text = recognizer.recognize_google(audio_data, language='ru-RU')
-            print(f"Распознанная речь в файле {os.path.basename(wav_path)}: {text}")
-        except sr.UnknownValueError:
-            print(f"Речь в файле {os.path.basename(wav_path)} не распознана.")
-        except sr.RequestError as e:
-            print(f"Ошибка запроса к API: {e}")
+            wav_path = processor.convert_to_wav(file_path)
+            text = recognizer.recognize_speech(wav_path)
+            compliance_results = checker.check_compliance(text)
+            for result in compliance_results:
+                print(f"{file_name} - {result[1]}: {'Соответствует' if result[0] else 'Нарушение'}")
 
-for file_name in os.listdir(source_folder):
-    if file_name.endswith('.ogg'):
-        file_path = os.path.join(source_folder, file_name)
-        convert_and_recognize(file_path)
+if __name__ == "__main__":
+    main()

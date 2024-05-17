@@ -1,0 +1,18 @@
+[
+    {
+        "description": "Вызов дежурного по станции",
+        "pattern": "Дежурный по станции %station_name%"
+    },
+    {
+        "description": "Ответ дежурного по станции",
+        "pattern": "Я, дежурный по станции %station_name%, слушаю"
+    },
+    {
+        "description": "Вызов машиниста поезда",
+        "pattern": "Машинист поезда %train_number%"
+    },
+    {
+        "description": "Ответ машиниста поезда",
+        "pattern": "Я, машинист поезда %train_number%, слушаю"
+    }
+]
