@@ -3,7 +3,7 @@
 ## install
 `pip install -r requirements.txt`
 
-[PROGRAM IS REQUIRED INSTALLED FFMPEG AND FFPROBE (click to install)](https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip)
+[PROGRAM IS REQUIRED TO BE INSTALLED FFMPEG AND FFPROBE (click to install)](https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip)
 
 ## Start
 ### linux:

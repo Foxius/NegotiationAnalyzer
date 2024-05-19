@@ -162,3 +162,6 @@ cython_debug/
 .idea/
 
 model/
+ffmpeg.exe
+ffplay.exe
+ffprobe.exe
