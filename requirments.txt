@@ -1,0 +1,5 @@
+vosk
+pydub
+librosa
+soundfile
+shutil
