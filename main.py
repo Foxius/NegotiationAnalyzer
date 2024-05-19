@@ -2,24 +2,13 @@ import os
 import shutil
 import wave
 import json
-from vosk import Model, KaldiRecognizer, SetLogLevel
+from vosk import KaldiRecognizer, SetLogLevel
 from pydub import AudioSegment
 import librosa
 import soundfile as sf
 
-input_dir = os.path.abspath("./audio_input")
-out_dir = os.path.abspath("./audio_out")
-
-
-def load_model(model_path="model"):
-    if not os.path.exists(model_path):
-        print(
-            f"Пожалуйста, скачайте модель Vosk с https://alphacephei.com/vosk/models и распакуйте ее в '{model_path}'"
-        )
-        return ""
-    model = Model(model_path)
-    return model
-
+from config import input_dir, out_dir
+from handlers.model import load_model
 
 model = load_model()
 
@@ -51,21 +40,24 @@ def transcribe_mp3(name):
         if len(data) == 0:
             break
         if rec.AcceptWaveform(data):
-            result = json.loads(rec.Result())  # Преобразуем JSON строку в словарь
+            result = json.loads(rec.Result())
             transcription += f"{result.get('text', '')} "
 
-    result = json.loads(rec.FinalResult())  # Преобразуем JSON строку в словарь
+    result = json.loads(rec.FinalResult())
     transcription += f"{result.get('text', '')} "
 
     return transcription
 
 
-fls = []
-for root, dirs, files in os.walk("./audio_input"):
-    for filename in files:
-        fls.append(filename)
+def main():
+    fls = []
+    for root, dirs, files in os.walk("./audio_input"):
+        for filename in files:
+            fls.append(filename)
 
-for i in fls:
-    transcription = transcribe_mp3(i)
-    print(f"Filename={i} | Transcription = '{transcription}'")
+    for i in fls:
+        transcription = transcribe_mp3(i)
+        print(f"Filename={i} | Transcription = '{transcription}'")
 
+if __name__ == "__main__":
+    main()
