@@ -2,4 +2,4 @@ vosk
 pydub
 librosa
 soundfile
-shutil
+llama-cpp-python

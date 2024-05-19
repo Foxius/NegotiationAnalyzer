@@ -26,7 +26,7 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-    TRANSCRIPTION = '\033[33m'  # Цвет для транскрипции
+    TRANSCRIPTION = '\033[33m'
 
 
 def rms_normalize(audio):
